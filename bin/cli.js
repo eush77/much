@@ -4,11 +4,48 @@
 
 var nessLess = require('..');
 
-var log = require('simple-output')
-  , concat = require('concat-stream');
+var output = require('simple-output')
+  , concat = require('concat-stream')
+  , tempfile = require('tempfile');
 
 var fs = require('fs')
-  , util = require('util');
+  , util = require('util')
+  , spawn = require('child_process').spawn;
+
+output.stdout = output.stderr;
+
+
+/**
+ * "more" is a fallback that could potentially work across platforms.
+ */
+var defaultPager = function () {
+  return process.env.PAGER || 'more';
+};
+
+
+/**
+ * Open code with $PAGER.
+ * Respect extension hooks (such as LESSOPEN).
+ *
+ * @arg {string} content
+ * @arg {string[]} [pagerArgs]
+ */
+var paginate = function (content, pagerArgs) {
+  var tmp = tempfile('.js');
+
+  pagerArgs = pagerArgs || [];
+  pagerArgs.push(tmp);
+
+  fs.writeFile(tmp, content, function (err) {
+    if (err) throw err;
+
+    spawn(defaultPager(), pagerArgs, {
+      stdio: 'inherit'
+    }).on('exit', function () {
+      fs.unlink(tmp);
+    });
+  });
+};
 
 
 (function (argv) {
@@ -24,11 +61,11 @@ var fs = require('fs')
     var filename = argv.shift();
 
     if (filename == null) {
-      log.error('No file to operate.');
+      output.error('No file to operate.');
       return;
     }
     else if (!fs.existsSync(filename)) {
-      log.error('File not found: ' + filename);
+      output.error('File not found: ' + filename);
       return;
     }
     else {
@@ -40,7 +77,17 @@ var fs = require('fs')
   }
 
   source.pipe(concat(function (code) {
-    util.print(nessLess(code, { depth: depth }));
-  }));
+    code = nessLess(code, { depth: depth });
 
+    if (process.stdout.isTTY) {
+      paginate(code, argv);
+    }
+    else {
+      if (argv.length) {
+        output.warn('Unused options: ' + JSON.stringify(argv));
+      }
+
+      util.print(code);
+    }
+  }));
 }(process.argv.slice(2)));
