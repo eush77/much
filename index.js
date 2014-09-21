@@ -14,13 +14,11 @@ var isFunctionNode = function (node) {
  *
  * @arg {string} code
  * @arg {Object} options
- * @property {number} [depth] - Maximum depth level.
+ * @property {number} depth - Maximum depth level.
  * @property {string} [placeholder]
  * @return {string}
  */
 module.exports = function (code, options) {
-  options = options || {};
-  options.depth = options.depth || 1;
   options.placeholder = options.placeholder || ' /*..*/ ';
 
   var replacer = '{' + options.placeholder + '}';

@@ -4,6 +4,7 @@
   "description": "Fold deeply nested functions for the high-level view",
   "author": "Eugene Sharygin <eush77@gmail.com>",
   "license": "MIT",
+  "bin": "bin/cli.js",
   "homepage": "https://github.com/eush77/ness-less",
   "repository": {
     "type": "git",
@@ -22,8 +23,10 @@
     "block"
   ],
   "dependencies": {
+    "concat-stream": "^1.4.6",
     "esprima": "^1.2.2",
-    "estraverse": "^1.5.1"
+    "estraverse": "^1.5.1",
+    "simple-output": "^0.2.2"
   },
   "devDependencies": {}
 }
