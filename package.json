@@ -31,6 +31,7 @@
     "esprima": "^1.2.2",
     "estraverse": "^1.5.1",
     "simple-output": "^0.2.2",
+    "stread": "0.0.2",
     "tempfile": "^1.0.0"
   },
   "devDependencies": {}

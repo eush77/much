@@ -6,7 +6,8 @@ var nessLess = require('..');
 
 var output = require('simple-output')
   , concat = require('concat-stream')
-  , tempfile = require('tempfile');
+  , tempfile = require('tempfile')
+  , stread = require('stread');
 
 var fs = require('fs')
   , util = require('util')
@@ -24,13 +25,30 @@ var defaultPager = function () {
 
 
 /**
- * Open code with $PAGER.
+ * Pipe code to $PAGER.
+ *
+ * @arg {string} content
+ * @arg {string[]} pagerArgs
+ */
+var pipeToPager = function (content, pagerArgs) {
+  pagerArgs = pagerArgs || [];
+
+  var pager = spawn(defaultPager(), pagerArgs, {
+    stdio: ['pipe', process.stdout, process.stderr]
+  });
+
+  stread(content).pipe(pager.stdin);
+};
+
+
+/**
+ * Open code in $PAGER, as if it was called directly with a file name.
  * Respect extension hooks (such as LESSOPEN).
  *
  * @arg {string} content
  * @arg {string[]} [pagerArgs]
  */
-var paginate = function (content, pagerArgs) {
+var openInPager = function (content, pagerArgs) {
   var tmp = tempfile('.js');
 
   pagerArgs = pagerArgs || [];
@@ -55,7 +73,7 @@ var paginate = function (content, pagerArgs) {
     depth = -argv.shift();
   }
 
-  var source;
+  var source, emulateDirectCall;
 
   if (process.stdin.isTTY) {
     var filename = argv.shift();
@@ -70,17 +88,19 @@ var paginate = function (content, pagerArgs) {
     }
     else {
       source = fs.createReadStream(filename, { encoding: 'utf8' });
+      emulateDirectCall = true;
     }
   }
   else {
     source = process.stdin;
+    emulateDirectCall = false;
   }
 
   source.pipe(concat(function (code) {
     code = nessLess(code, { depth: depth });
 
     if (process.stdout.isTTY) {
-      paginate(code, argv);
+      (emulateDirectCall ? openInPager : pipeToPager)(code, argv);
     }
     else {
       if (argv.length) {
