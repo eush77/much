@@ -1,5 +1,7 @@
 # ness-less
 
+[![npm](https://nodei.co/npm/ness-less.png)](https://nodei.co/npm/ness-less/)
+
 `ness-less` makes the nestness less. For the time being. Just so you could grasp the code at once.
 
 But all it does, actually, is folding definitions of deeply nested functions.
