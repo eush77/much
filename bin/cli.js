@@ -97,7 +97,13 @@ var openInPager = function (content, pagerArgs) {
   }
 
   source.pipe(concat(function (code) {
-    code = nessLess(code, { depth: depth });
+    try {
+      code = nessLess(code, { depth: depth });
+    }
+    catch (e) {
+      output.error('Parsing error' + (e.message ? ': ' + e.message : '.'));
+      return;
+    }
 
     if (process.stdout.isTTY) {
       (emulateDirectCall ? openInPager : pipeToPager)(code, argv);
