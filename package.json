@@ -7,6 +7,7 @@
   "bin": {
     "ness": "bin/cli.js"
   },
+  "preferGlobal": true,
   "homepage": "https://github.com/eush77/ness-less",
   "repository": {
     "type": "git",
