@@ -1,6 +1,11 @@
-# ness-less
+# ness-less [![Dependency Status][david-badge]][david] [![DevDependency Status][david-dev-badge]][david-dev]
 
 [![npm](https://nodei.co/npm/ness-less.png)](https://nodei.co/npm/ness-less/)
+
+[david-badge]: https://david-dm.org/eush77/ness-less.png
+[david]: https://david-dm.org/eush77/ness-less
+[david-dev-badge]: https://david-dm.org/eush77/ness-less/dev-status.png
+[david-dev]: https://david-dm.org/eush77/ness-less#info=devDependencies
 
 `ness-less` makes the nestness less. For the time being. Just so you could grasp the code at once.
 
