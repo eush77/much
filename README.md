@@ -49,45 +49,25 @@ var paths = {
 };
 
 function Browserify (files, opts) { /*..*/ }
-
 Browserify.prototype.require = function (file, opts) { /*..*/ };
-
 Browserify.prototype.add = function (file, opts) { /*..*/ };
-
 Browserify.prototype.external = function (file, opts) { /*..*/ };
-
 Browserify.prototype.exclude = function (file, opts) { /*..*/ };
-
 Browserify.prototype.ignore = function (file, opts) { /*..*/ };
-
 Browserify.prototype.transform = function (tr, opts) { /*..*/ };
-
 Browserify.prototype.plugin = function (p, opts) { /*..*/ };
-
 Browserify.prototype._createPipeline = function (opts) { /*..*/ };
-
 Browserify.prototype._createDeps = function (opts) { /*..*/ };
-
 Browserify.prototype._recorder = function (opts) { /*..*/ };
-
 Browserify.prototype._json = function () { /*..*/ };
-
 Browserify.prototype._unbom = function () { /*..*/ };
-
 Browserify.prototype._syntax = function () { /*..*/ };
-
 Browserify.prototype._dedupe = function () { /*..*/ };
-
 Browserify.prototype._label = function (opts) { /*..*/ };
-
 Browserify.prototype._emitDeps = function () { /*..*/ };
-
 Browserify.prototype._debug = function (opts) { /*..*/ };
-
 Browserify.prototype.reset = function (opts) { /*..*/ };
-
 Browserify.prototype.bundle = function (cb) { /*..*/ };
-
 function has (obj, key) { /*..*/ }
 function isStream (s) { /*..*/ }
 ```
@@ -110,10 +90,11 @@ ness -0 file.js |wc -l
 
 ### nessLess(code, options)
 
-| Option      | Type   | Required? |
-| :---------- | :----- | :-------: |
-| depth       | number | Yes       |
-| placeholder | string | No        |
+| Option          | Type    | Required? | Default |
+| :-------------- | :------ | :-------: | :------ |
+| depth           | number  | Yes       |         |
+| placeholder     | string  | No        |         |
+| stripEmptyLines | boolean | No        | `true`  |
 
 ## Install
 

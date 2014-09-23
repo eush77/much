@@ -9,6 +9,12 @@ var isFunctionNode = function (node) {
 };
 
 
+var stripEmptyLines = function (chunk) {
+  var match = chunk.match(/^(.*)\n\s*\n(.*)$/);
+  return match ? match[1] + '\n' + match[2] : chunk;
+};
+
+
 /**
  * Fold deeply nested functions.
  *
@@ -16,10 +22,14 @@ var isFunctionNode = function (node) {
  * @arg {Object} options
  * @property {number} depth - Maximum depth level.
  * @property {string} [placeholder]
+ * @property {boolean} [stripEmptyLines=true] - Remove excessive whitespace between processed lines.
  * @return {string}
  */
 module.exports = function (code, options) {
   options.placeholder = options.placeholder || ' /*..*/ ';
+  if (options.stripEmptyLines == null) {
+    options.stripEmptyLines = true;
+  }
 
   var replacer = '{' + options.placeholder + '}';
 
@@ -35,7 +45,12 @@ module.exports = function (code, options) {
     enter: function (node) {
       if (isFunctionNode(node)) {
         if (options.depth < ++depth) {
-          output.push(code.slice(pos, node.body.range[0]), replacer);
+          var chunk = code.slice(pos, node.body.range[0]);
+          if (options.stripEmptyLines) {
+            chunk = stripEmptyLines(chunk);
+          }
+
+          output.push(chunk, replacer);
           pos = node.body.range[1];
           this.skip();
         }
