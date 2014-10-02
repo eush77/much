@@ -8,6 +8,10 @@ var isFunctionNode = function (node) {
   return /^Function/.test(node.type);
 };
 
+var isObjectNode = function (node) {
+  return node.type == 'ObjectExpression';
+};
+
 
 var stripEmptyLines = function (chunk) {
   var match = chunk.match(/^(.*)\n\s*\n(.*)$/);
@@ -41,23 +45,33 @@ module.exports = function (code, options) {
     , pos = 0
     , depth = 0;
 
+  var skipRange = function (range) {
+    var chunk = code.slice(pos, range[0]);
+    if (options.stripEmptyLines) {
+      chunk = stripEmptyLines(chunk);
+    }
+
+    output.push(chunk, replacer);
+    pos = range[1];
+  };
+
   estraverse.traverse(ast, {
     enter: function (node) {
       if (isFunctionNode(node)) {
         if (options.depth < ++depth) {
-          var chunk = code.slice(pos, node.body.range[0]);
-          if (options.stripEmptyLines) {
-            chunk = stripEmptyLines(chunk);
-          }
-
-          output.push(chunk, replacer);
-          pos = node.body.range[1];
+          skipRange(node.body.range);
+          this.skip();
+        }
+      }
+      else if (isObjectNode(node)) {
+        if (options.depth < ++depth) {
+          skipRange(node.range);
           this.skip();
         }
       }
     },
     leave: function (node) {
-      if (isFunctionNode(node)) {
+      if (isFunctionNode(node) || isObjectNode(node)) {
         depth -= 1;
       }
     }
