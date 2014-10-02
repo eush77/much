@@ -9,7 +9,7 @@
 
 `ness-less` makes the nestness less. For the time being. Just so you could grasp the code at once.
 
-But all it does, actually, is folding definitions of deeply nested functions.
+But all it does, actually, is folding definitions of deeply nested functions and objects.
 
 ## Example
 
@@ -49,10 +49,7 @@ module.exports = Browserify;
 inherits(Browserify, EventEmitter);
 
 var path = require('path');
-var paths = {
-    empty: path.join(__dirname, 'lib/_empty.js')
-};
-
+var paths = { /*..*/ };
 function Browserify (files, opts) { /*..*/ }
 Browserify.prototype.require = function (file, opts) { /*..*/ };
 Browserify.prototype.add = function (file, opts) { /*..*/ };
