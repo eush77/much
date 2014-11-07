@@ -96,7 +96,7 @@ var openInPager = function (content, pagerArgs) {
     emulateDirectCall = false;
   }
 
-  source.pipe(concat(function (code) {
+  source.pipe(concat({ encoding: 'string' }, function (code) {
     try {
       code = nessLess(code, { depth: depth });
     }
