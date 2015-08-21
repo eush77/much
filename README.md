@@ -1,22 +1,22 @@
-# ness-less [![Dependency Status][david-badge]][david] [![DevDependency Status][david-dev-badge]][david-dev]
+[![npm](https://nodei.co/npm/much.png)](https://nodei.co/npm/much/)
 
-[![npm](https://nodei.co/npm/ness-less.png)](https://nodei.co/npm/ness-less/)
+# much
 
-[david-badge]: https://david-dm.org/eush77/ness-less.png
-[david]: https://david-dm.org/eush77/ness-less
-[david-dev-badge]: https://david-dm.org/eush77/ness-less/dev-status.png
-[david-dev]: https://david-dm.org/eush77/ness-less#info=devDependencies
+[![Dependency Status][david-badge]][david]
 
-`ness-less` makes the nestness less. For the time being. Just so you could grasp the code at once.
+[david-badge]: https://david-dm.org/eush77/much.png
+[david]: https://david-dm.org/eush77/much
 
-But all it does, actually, is folding definitions of deeply nested functions and objects.
+`much` — pager with depth support.
+
+`much` folds definitions of deeply nested functions and objects.
 
 ## Example
 
-[Browserify's core file](https://github.com/substack/node-browserify/blob/master/index.js) normally contains around 630 lines of code, but `ness-less` can extract a brief summary out of it. Different depth settings lead to different levels of granularity.
+[Browserify's core file](https://github.com/substack/node-browserify/blob/master/index.js) normally contains around 630 lines of code, but `much` can extract a brief summary out of it. Different depth settings lead to different levels of granularity.
 
 ```shell
-ness node-browserify/index.js
+much node-browserify/index.js
 ```
 
 output:
@@ -76,21 +76,21 @@ function isStream (s) { /*..*/ }
 
 ## CLI
 
-`ness-less` will try to feed the output to your favorite $PAGER, so check up this variable.
+`much` will try to feed the output to your favorite $PAGER, so check up this variable.
 
 ```shell
-ness [-DEPTH] file.js [PAGER_OPTIONS]...
+much [-DEPTH] file.js [PAGER_OPTIONS]...
 ```
 
-However, if the output is redirected, `ness-less` will respect that.
+However, if the output is redirected, `much` will respect that.
 
 ```shell
-ness -0 file.js |wc -l
+much -0 file.js |wc -l
 ```
 
 ## API
 
-### nessLess(code, options)
+### much(code, options)
 
 | Option          | Type    | Required? | Default |
 | :-------------- | :------ | :-------: | :------ |
@@ -101,7 +101,7 @@ ness -0 file.js |wc -l
 ## Install
 
 ```shell
-npm install -g ness-less
+npm install -g much
 ```
 
 ## License

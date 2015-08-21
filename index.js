@@ -1,7 +1,7 @@
 'use strict';
 
-var esprima = require('esprima')
-  , estraverse = require('estraverse');
+var esprima = require('esprima'),
+    estraverse = require('estraverse');
 
 
 var isFunctionNode = function (node) {

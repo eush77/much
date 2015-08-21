@@ -1,17 +1,16 @@
 #!/usr/bin/env node
-
 'use strict';
 
-var nessLess = require('..');
+var nessLess = require('./');
 
-var output = require('simple-output')
-  , concat = require('concat-stream')
-  , tempfile = require('tempfile')
-  , stread = require('stread');
+var output = require('simple-output'),
+    concat = require('concat-stream'),
+    tempfile = require('tempfile'),
+    stread = require('stread');
 
-var fs = require('fs')
-  , util = require('util')
-  , spawn = require('child_process').spawn;
+var fs = require('fs'),
+    util = require('util'),
+    spawn = require('child_process').spawn;
 
 output.stdout = output.stderr;
 
