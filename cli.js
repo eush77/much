@@ -5,13 +5,14 @@ var fold = require('./');
 
 var blessed = require('blessed'),
     help = require('help-version')(usage()).help,
-    concat = require('concat-stream');
+    concat = require('concat-stream'),
+    ttys = require('ttys');
 
 var fs = require('fs');
 
 
 function usage () {
-  return 'Usage:  much <file>';
+  return 'Usage:  much [<file>]';
 }
 
 
@@ -21,13 +22,13 @@ function error (err) {
 
 
 (function main (argv) {
-  if (argv.length != 1) {
+  if (argv.length > 1) {
     return help(1);
   }
 
-  var filename = argv[0];
+  var filename = argv[0] || '-';
 
-  fs.createReadStream(filename)
+  (filename == '-' ? process.stdin : fs.createReadStream(filename))
     .on('error', error)
     .pipe(concat({ encoding: 'string' }, render));
 
@@ -43,6 +44,7 @@ function error (err) {
 function Screen (title) {
   var screen = blessed.screen({
     title: title,
+    input: ttys.stdin,
     smartCSR: true
   });
 

@@ -24,7 +24,8 @@
     "concat-stream": "^1.4.6",
     "esprima": "^1.2.2",
     "estraverse": "^1.5.1",
-    "help-version": "^1.0.0"
+    "help-version": "^1.0.0",
+    "ttys": "0.0.3"
   },
   "devDependencies": {}
 }
