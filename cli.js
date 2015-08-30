@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-var fold = require('./');
+var fold = require('./lib/fold'),
+    lesspipe = require('./lib/lesspipe');
 
 var blessed = require('blessed'),
     help = require('help-version')(usage()).help,
@@ -18,6 +19,7 @@ function usage () {
 
 function error (err) {
   console.error(err.toString());
+  process.exit(2);
 }
 
 
@@ -74,17 +76,23 @@ function ContentBox (content) {
   });
 
   var depth = 2;
-  box.content = fold(content, { depth: depth });
+  render(depth);
 
   box.key(['left', 'h'], function () {
-    box.content = fold(content, { depth: depth = Math.max(0, depth - 1) });
-    box.screen.render();
+    render(depth = Math.max(0, depth - 1));
   });
 
   box.key(['right', 'l'], function () {
-    box.content = fold(content, { depth: ++depth });
-    box.screen.render();
+    render(++depth);
   });
+
+  function render (depth) {
+    lesspipe(fold(content, { depth: depth }), function (err, content) {
+      if (err) return error(err);
+      box.content = content;
+      box.screen.render();
+    });
+  }
 
   return box;
 }
