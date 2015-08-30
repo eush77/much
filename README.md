@@ -11,6 +11,14 @@
 
 Fold function and object bodies interactively.
 
+## Example
+
+```
+$ much browserify.js
+```
+
+![screenshot](screenshot.png)
+
 ## CLI
 
 #### `$ much [<file>]`
