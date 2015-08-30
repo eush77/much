@@ -76,12 +76,12 @@ function ContentBox (content) {
   var depth = 2;
   box.content = fold(content, { depth: depth });
 
-  box.key('h', function () {
+  box.key(['left', 'h'], function () {
     box.content = fold(content, { depth: depth = Math.max(0, depth - 1) });
     box.screen.render();
   });
 
-  box.key('l', function () {
+  box.key(['right', 'l'], function () {
     box.content = fold(content, { depth: ++depth });
     box.screen.render();
   });
