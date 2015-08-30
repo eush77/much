@@ -1,118 +1,88 @@
 #!/usr/bin/env node
 'use strict';
 
-var nessLess = require('./');
+var fold = require('./');
 
-var output = require('simple-output'),
-    concat = require('concat-stream'),
-    tempfile = require('tempfile'),
-    stread = require('stread');
+var blessed = require('blessed'),
+    help = require('help-version')(usage()).help,
+    concat = require('concat-stream');
 
-var fs = require('fs'),
-    util = require('util'),
-    spawn = require('child_process').spawn;
-
-output.stdout = output.stderr;
+var fs = require('fs');
 
 
-/**
- * "more" is a fallback that could potentially work across platforms.
- */
-var defaultPager = function () {
-  return process.env.PAGER || 'more';
-};
+function usage () {
+  return 'Usage:  much <file>';
+}
 
 
-/**
- * Pipe code to $PAGER.
- *
- * @arg {string} content
- * @arg {string[]} pagerArgs
- */
-var pipeToPager = function (content, pagerArgs) {
-  pagerArgs = pagerArgs || [];
-
-  var pager = spawn(defaultPager(), pagerArgs, {
-    stdio: ['pipe', process.stdout, process.stderr]
-  });
-
-  stread(content).pipe(pager.stdin);
-};
+function error (err) {
+  console.error(err.toString());
+}
 
 
-/**
- * Open code in $PAGER, as if it was called directly with a file name.
- * Respect extension hooks (such as LESSOPEN).
- *
- * @arg {string} content
- * @arg {string[]} [pagerArgs]
- */
-var openInPager = function (content, pagerArgs) {
-  var tmp = tempfile('.js');
-
-  pagerArgs = pagerArgs || [];
-  pagerArgs.push(tmp);
-
-  fs.writeFile(tmp, content, function (err) {
-    if (err) throw err;
-
-    spawn(defaultPager(), pagerArgs, {
-      stdio: 'inherit'
-    }).on('exit', function () {
-      fs.unlink(tmp);
-    });
-  });
-};
-
-
-(function (argv) {
-  var depth = 0;
-
-  if (/^-\d+$/.test(argv[0])) {
-    depth = -argv.shift();
+(function main (argv) {
+  if (argv.length != 1) {
+    return help(1);
   }
 
-  var source, emulateDirectCall;
+  var filename = argv[0];
 
-  if (process.stdin.isTTY) {
-    var filename = argv.shift();
+  fs.createReadStream(filename)
+    .on('error', error)
+    .pipe(concat({ encoding: 'string' }, render));
 
-    if (filename == null) {
-      output.error('No file to operate.');
-      return;
-    }
-    else if (!fs.existsSync(filename)) {
-      output.error('File not found: ' + filename);
-      return;
-    }
-    else {
-      source = fs.createReadStream(filename, { encoding: 'utf8' });
-      emulateDirectCall = true;
-    }
+  function render (content) {
+    var screen = Screen('much ' + filename);
+    var contentBox = ContentBox(content);
+    screen.append(contentBox);
+    screen.render();
   }
-  else {
-    source = process.stdin;
-    emulateDirectCall = false;
-  }
-
-  source.pipe(concat({ encoding: 'string' }, function (code) {
-    try {
-      code = nessLess(code, { depth: depth });
-    }
-    catch (e) {
-      output.error('Parsing error' + (e.message ? ': ' + e.message : '.'));
-      return;
-    }
-
-    if (process.stdout.isTTY) {
-      (emulateDirectCall ? openInPager : pipeToPager)(code, argv);
-    }
-    else {
-      if (argv.length) {
-        output.warn('Unused options: ' + JSON.stringify(argv));
-      }
-
-      util.print(code);
-    }
-  }));
 }(process.argv.slice(2)));
+
+
+function Screen (title) {
+  var screen = blessed.screen({
+    title: title,
+    smartCSR: true
+  });
+
+  screen.key(['q', 'C-c'], function () {
+    process.exit();
+  });
+
+  return screen;
+}
+
+
+function ContentBox (content) {
+  var box = blessed.scrollablebox({
+    border: {
+      type: 'line'
+    },
+    scrollable: true,
+    alwaysScroll: true,
+    scrollbar: true,
+    keys: true,
+    vi: true,
+    style: {
+      scrollbar: {
+        bg: 'red'
+      }
+    }
+  });
+
+  var depth = 2;
+  box.content = fold(content, { depth: depth });
+
+  box.key('h', function () {
+    box.content = fold(content, { depth: depth = Math.max(0, depth - 1) });
+    box.screen.render();
+  });
+
+  box.key('l', function () {
+    box.content = fold(content, { depth: ++depth });
+    box.screen.render();
+  });
+
+  return box;
+}
