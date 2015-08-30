@@ -1,7 +1,7 @@
 {
   "name": "much",
   "version": "0.2.2",
-  "description": "WIP pager with depth support for JavaScript source code",
+  "description": "Pager with depth support for JavaScript source code",
   "author": "Eugene Sharygin <eush77@gmail.com>",
   "license": "MIT",
   "bin": "cli.js",
@@ -18,7 +18,23 @@
   "bugs": {
     "url": "https://github.com/eush77/much/issues"
   },
-  "keywords": [],
+  "keywords": [
+    "cli",
+    "console",
+    "depth",
+    "fold",
+    "folding",
+    "less",
+    "more",
+    "nested",
+    "nesting",
+    "pager",
+    "pipe",
+    "source",
+    "terminal",
+    "unfold",
+    "viewer"
+  ],
   "dependencies": {
     "blessed": "^0.1.80",
     "concat-stream": "^1.4.6",
