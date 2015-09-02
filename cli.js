@@ -75,7 +75,7 @@ function ContentBox (content) {
     }
   });
 
-  var depth = 2;
+  var depth = 0;
   render(depth);
 
   box.key(['left', 'h'], function () {
