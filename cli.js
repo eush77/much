@@ -85,8 +85,16 @@ function ContentBox (content) {
     render(depth = Math.max(0, depth - 1));
   });
 
+  box.key(['S-left', 'S-h'], function () {
+    render(depth = 0);
+  });
+
   box.key(['right', 'l'], function () {
     render(depth = Math.min(maxDepth, depth + 1));
+  });
+
+  box.key(['S-right', 'S-l'], function () {
+    render(depth = maxDepth);
   });
 
   box.key(['d'], function () {

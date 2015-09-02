@@ -27,17 +27,19 @@ Consumes `stdin` by default.
 
 ## Controls
 
-| key                             | description
-| :-----------------------------: | -----------
-| <kbd>q</kbd>, <kbd>Ctrl+c</kbd> | Quit.
-| <kbd>left</kbd>, <kbd>h</kbd>   | Fold code.
-| <kbd>right</kbd>, <kbd>l</kbd>  | Unfold code.
-| <kbd>down</kbd>, <kbd>j</kbd>   | Scroll down.
-| <kbd>up</kbd>, <kbd>k</kbd>     | Scroll up.
-| <kbd>d</kbd>                    | Scroll half the screen down.
-| <kbd>u</kbd>                    | Scroll half the screen up.
-| <kbd>g</kbd>                    | Scroll to top.
-| <kbd>G</kbd>                    | Scroll to bottom.
+| key                                   | description
+| :-----------------------------------: | -----------
+| <kbd>q</kbd>, <kbd>Ctrl+c</kbd>       | Quit.
+| <kbd>left</kbd>, <kbd>h</kbd>         | Fold code.
+| <kbd>right</kbd>, <kbd>l</kbd>        | Unfold code.
+| <kbd>Shift+left</kbd>, <kbd>H</kbd>   | Fold all.
+| <kbd>Shift+right</kbd>, <kbd>L</kbd>  | Unfold all.
+| <kbd>down</kbd>, <kbd>j</kbd>         | Scroll down.
+| <kbd>up</kbd>, <kbd>k</kbd>           | Scroll up.
+| <kbd>d</kbd>                          | Scroll half the screen down.
+| <kbd>u</kbd>                          | Scroll half the screen up.
+| <kbd>g</kbd>                          | Scroll to top.
+| <kbd>G</kbd>                          | Scroll to bottom.
 
 
 ## $LESSOPEN
