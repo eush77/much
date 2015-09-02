@@ -34,6 +34,8 @@ Consumes `stdin` by default.
 | <kbd>right</kbd>, <kbd>l</kbd>  | Unfold code.
 | <kbd>down</kbd>, <kbd>j</kbd>   | Scroll down.
 | <kbd>up</kbd>, <kbd>k</kbd>     | Scroll up.
+| <kbd>d</kbd>                    | Scroll half the screen down.
+| <kbd>u</kbd>                    | Scroll half the screen up.
 | <kbd>g</kbd>                    | Scroll to top.
 | <kbd>G</kbd>                    | Scroll to bottom.
 

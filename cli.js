@@ -86,6 +86,16 @@ function ContentBox (content) {
     render(++depth);
   });
 
+  box.key(['d'], function () {
+    box.scroll(box.height / 2);
+    box.screen.render();
+  });
+
+  box.key(['u'], function () {
+    box.scroll(-box.height / 2);
+    box.screen.render();
+  });
+
   function render (depth) {
     lesspipe(fold(content, { depth: depth }), function (err, content) {
       if (err) return error(err);
