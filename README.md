@@ -9,7 +9,7 @@
 
 `much` — pager with depth support.
 
-Fold function and object bodies interactively.
+Fold JavaScript functions, objects and blocks interactively in the pager.
 
 ## Example
 
