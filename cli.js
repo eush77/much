@@ -77,6 +77,8 @@ function ContentBox (content) {
 
   var foldable = Foldable(content);
   var depth = 0;
+  var maxDepth = foldable.maxDepth();
+
   render(depth);
 
   box.key(['left', 'h'], function () {
@@ -84,7 +86,7 @@ function ContentBox (content) {
   });
 
   box.key(['right', 'l'], function () {
-    render(++depth);
+    render(depth = Math.min(maxDepth, depth + 1));
   });
 
   box.key(['d'], function () {
