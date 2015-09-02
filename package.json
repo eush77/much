@@ -36,10 +36,10 @@
     "viewer"
   ],
   "dependencies": {
+    "acorn": "^2.4.0",
     "blessed": "^0.1.80",
     "concat-stream": "^1.4.6",
-    "esprima": "^1.2.2",
-    "estraverse": "^1.5.1",
+    "estraverse": "^4.1.0",
     "gettemporaryfilepath": "0.0.1",
     "help-version": "^1.0.0",
     "ttys": "0.0.3"
