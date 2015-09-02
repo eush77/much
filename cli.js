@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-var fold = require('./lib/fold'),
+var Foldable = require('./lib/fold'),
     lesspipe = require('./lib/lesspipe');
 
 var blessed = require('blessed'),
@@ -75,6 +75,7 @@ function ContentBox (content) {
     }
   });
 
+  var foldable = Foldable(content);
   var depth = 0;
   render(depth);
 
@@ -97,7 +98,7 @@ function ContentBox (content) {
   });
 
   function render (depth) {
-    lesspipe(fold(content, { depth: depth }), function (err, content) {
+    lesspipe(foldable.fold(depth), function (err, content) {
       if (err) return error(err);
       box.content = content;
       box.screen.render();
