@@ -71,15 +71,15 @@ function Screen (opts) {
 
 
 function ContentBox (content) {
-  var box = blessed.scrollablebox({
-    border: {
-      type: 'line'
-    },
+  var box = blessed.box({
     scrollable: true,
     alwaysScroll: true,
     scrollbar: true,
     keys: true,
     vi: true,
+    border: {
+      type: 'line'
+    },
     style: {
       scrollbar: {
         bg: 'red'
