@@ -50,6 +50,37 @@ function Screen (opts) {
   });
 
   var contentBox = ContentBox(opts.content);
+  var input = Input({
+    height: 1,
+    bottom: 0,
+    hidden: true
+  });
+
+  var showInput = function () {
+    contentBox.bottom = 1;
+    input.show();
+  };
+  var hideInput = function () {
+    contentBox.bottom = 0;
+    input.hide();
+  };
+
+  var search;
+
+  screen.key('/', function () {
+    showInput();
+    input.setValue('/');
+    screen.render();
+
+    input.readInput(function (err, value) {
+      if (err) return error(err);
+
+      search = value;
+
+      hideInput();
+      screen.render();
+    });
+  });
 
   screen.key(['q', 'C-c'], function () {
     process.exit();
@@ -66,6 +97,7 @@ function Screen (opts) {
   });
 
   screen.append(contentBox);
+  screen.append(input);
   return screen;
 }
 
@@ -128,4 +160,17 @@ function ContentBox (content) {
   }
 
   return box;
+}
+
+
+function Input (opts) {
+  var input = blessed.textbox(opts);
+
+  input.key('backspace', function () {
+    if (!input.value) {
+      input.cancel();
+    }
+  });
+
+  return input;
 }
