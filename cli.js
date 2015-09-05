@@ -56,12 +56,13 @@ function Screen (opts) {
   });
 
   screen.key('C-z', function () {
-    process.stdout.write('\x1bc');
+    screen.leave();
     process.kill(process.pid, 'SIGSTOP');
   });
 
   process.on('SIGCONT', function () {
-    screen.program.emit('resize');
+    screen.enter();
+    screen.render();
   });
 
   screen.append(contentBox);
