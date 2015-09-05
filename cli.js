@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 'use strict';
 
-var Foldable = require('./lib/fold'),
-    lesspipe = require('./lib/lesspipe');
+var ContentBox = require('./lib/widgets/content-box'),
+    Input = require('./lib/widgets/input'),
+    error = require('./lib/error'),
+    enableSearch = require('./lib/search');
 
 var blessed = require('blessed'),
     help = require('help-version')(usage()).help,
@@ -14,13 +16,6 @@ var fs = require('fs');
 
 function usage () {
   return 'Usage:  much [<file>]';
-}
-
-
-function error (err) {
-  blessed.screen.instances[0].destroy();
-  console.error(err.toString());
-  process.exit(2);
 }
 
 
@@ -49,8 +44,36 @@ function Screen (opts) {
     smartCSR: true
   });
 
-  var contentBox = ContentBox(opts.content);
+  var $ = screen.$ = {
+    contentBox: ContentBox(opts.content),
+    input: Input({
+      height: 1,
+      bottom: 0,
+      hidden: true
+    })
+  };
 
+  screen.append($.contentBox);
+  screen.append($.input);
+
+  screen._ = {
+    showInput: function () {
+      $.contentBox.bottom = 1;
+      $.input.show();
+    },
+    hideInput: function () {
+      $.contentBox.bottom = 0;
+      $.input.hide();
+    }
+  };
+
+  enableSearch(screen);
+  setupControls(screen);
+  return screen;
+}
+
+
+function setupControls (screen) {
   screen.key(['q', 'C-c'], function () {
     process.exit();
   });
@@ -64,68 +87,4 @@ function Screen (opts) {
     screen.enter();
     screen.render();
   });
-
-  screen.append(contentBox);
-  return screen;
-}
-
-
-function ContentBox (content) {
-  var box = blessed.box({
-    scrollable: true,
-    alwaysScroll: true,
-    scrollbar: true,
-    keys: true,
-    vi: true,
-    border: {
-      type: 'line'
-    },
-    style: {
-      scrollbar: {
-        bg: 'red'
-      }
-    }
-  });
-
-  var foldable = Foldable(content);
-  var depth = 0;
-  var maxDepth = foldable.maxDepth();
-
-  render(depth);
-
-  box.key(['left', 'h'], function () {
-    render(depth = Math.max(0, depth - 1));
-  });
-
-  box.key(['S-left', 'S-h'], function () {
-    render(depth = 0);
-  });
-
-  box.key(['right', 'l'], function () {
-    render(depth = Math.min(maxDepth, depth + 1));
-  });
-
-  box.key(['S-right', 'S-l'], function () {
-    render(depth = maxDepth);
-  });
-
-  box.key('d', function () {
-    box.scroll(Math.floor(box.height / 2));
-    box.screen.render();
-  });
-
-  box.key('u', function () {
-    box.scroll(-Math.floor(box.height / 2));
-    box.screen.render();
-  });
-
-  function render (depth) {
-    lesspipe(foldable.fold(depth), function (err, content) {
-      if (err) return error(err);
-      box.setContent(content);
-      box.screen.render();
-    });
-  }
-
-  return box;
 }
