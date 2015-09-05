@@ -55,6 +55,15 @@ function Screen (opts) {
     process.exit();
   });
 
+  screen.key('C-z', function () {
+    process.stdout.write('\x1bc');
+    process.kill(process.pid, 'SIGSTOP');
+  });
+
+  process.on('SIGCONT', function () {
+    screen.program.emit('resize');
+  });
+
   screen.append(contentBox);
   return screen;
 }
