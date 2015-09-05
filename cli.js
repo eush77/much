@@ -99,13 +99,13 @@ function ContentBox (content) {
     render(depth = maxDepth);
   });
 
-  box.key(['d'], function () {
-    box.scroll(box.height / 2);
+  box.key('d', function () {
+    box.scroll(Math.floor(box.height / 2));
     box.screen.render();
   });
 
-  box.key(['u'], function () {
-    box.scroll(-box.height / 2);
+  box.key('u', function () {
+    box.scroll(-Math.floor(box.height / 2));
     box.screen.render();
   });
 
