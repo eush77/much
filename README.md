@@ -34,6 +34,9 @@ Consumes `stdin` by default.
 | <kbd>right</kbd>, <kbd>l</kbd>        | Unfold code.
 | <kbd>Shift+left</kbd>, <kbd>H</kbd>   | Fold all.
 | <kbd>Shift+right</kbd>, <kbd>L</kbd>  | Unfold all.
+| <kbd>/</kbd>                          | Search forward.
+| <kbd>n</kbd>                          | Scroll to next occurrence.
+| <kbd>N</kbd>                          | Scroll to previous occurrence.
 | <kbd>down</kbd>, <kbd>j</kbd>         | Scroll down.
 | <kbd>up</kbd>, <kbd>k</kbd>           | Scroll up.
 | <kbd>d</kbd>                          | Scroll half the screen down.
