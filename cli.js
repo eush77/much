@@ -18,6 +18,7 @@ function usage () {
 
 
 function error (err) {
+  blessed.screen.instances[0].destroy();
   console.error(err.toString());
   process.exit(2);
 }
