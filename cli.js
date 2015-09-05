@@ -33,28 +33,29 @@ function error (err) {
 
   (filename == '-' ? process.stdin : fs.createReadStream(filename))
     .on('error', error)
-    .pipe(concat({ encoding: 'string' }, render));
-
-  function render (content) {
-    var screen = Screen('much ' + filename);
-    var contentBox = ContentBox(content);
-    screen.append(contentBox);
-    screen.render();
-  }
+    .pipe(concat({ encoding: 'string' }, function (content) {
+      Screen({
+        title: 'much ' + filename,
+        content: content
+      }).render();
+    }));
 }(process.argv.slice(2)));
 
 
-function Screen (title) {
+function Screen (opts) {
   var screen = blessed.screen({
-    title: title,
+    title: opts.title,
     input: ttys.stdin,
     smartCSR: true
   });
+
+  var contentBox = ContentBox(opts.content);
 
   screen.key(['q', 'C-c'], function () {
     process.exit();
   });
 
+  screen.append(contentBox);
   return screen;
 }
 
@@ -111,7 +112,7 @@ function ContentBox (content) {
   function render (depth) {
     lesspipe(foldable.fold(depth), function (err, content) {
       if (err) return error(err);
-      box.content = content;
+      box.setContent(content);
       box.screen.render();
     });
   }
