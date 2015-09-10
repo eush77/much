@@ -56,11 +56,12 @@ Consumes `stdin` by default.
 
 ### Search
 
-| key          | description
-| :----------: | -----------
-| <kbd>/</kbd> | Search forward.
-| <kbd>n</kbd> | Scroll to next occurrence.
-| <kbd>N</kbd> | Scroll to previous occurrence.
+| key              | description
+| :--------------: | -----------
+| <kbd>/</kbd>     | Search forward.
+| <kbd>n</kbd>     | Scroll to next occurrence.
+| <kbd>N</kbd>     | Scroll to previous occurrence.
+| <kbd>ESC-u</kbd> | Clear search highlighting.
 
 ## $LESSOPEN
 

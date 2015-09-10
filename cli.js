@@ -4,7 +4,8 @@
 var ContentBox = require('./lib/widgets/content-box'),
     Input = require('./lib/widgets/input'),
     error = require('./lib/error'),
-    enableSearch = require('./lib/search');
+    enableSearch = require('./lib/search'),
+    enableEscapeLock = require('./lib/escape-lock');
 
 var blessed = require('blessed'),
     help = require('help-version')(usage()).help,
@@ -44,6 +45,13 @@ function Screen (opts) {
     smartCSR: true
   });
 
+  // We don't use screen.$, screen._ and screen.data interchangeably.
+  //
+  // - screen.$ gives access to widgets by unique ids.
+  // - screen._ contains useful helper functions.
+  // - screen.data represents (hopefully modest) global application state.
+  //
+
   var $ = screen.$ = {
     contentBox: ContentBox(screen, opts.content),
     input: Input(screen, {
@@ -67,6 +75,11 @@ function Screen (opts) {
     }
   };
 
+  screen.data = {
+    escapeLock: false  // Whether escape key is pressed.
+  };
+
+  enableEscapeLock(screen);
   enableSearch(screen);
   setupControls(screen);
   return screen;
