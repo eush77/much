@@ -1,6 +1,6 @@
 {
   "name": "much",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Pager with depth support for JavaScript source code",
   "author": "Eugene Sharygin <eush77@gmail.com>",
   "license": "MIT",
