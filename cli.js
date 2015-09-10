@@ -45,8 +45,8 @@ function Screen (opts) {
   });
 
   var $ = screen.$ = {
-    contentBox: ContentBox(opts.content),
-    input: Input({
+    contentBox: ContentBox(screen, opts.content),
+    input: Input(screen, {
       height: 1,
       bottom: 0,
       hidden: true
